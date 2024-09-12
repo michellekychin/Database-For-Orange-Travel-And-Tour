@@ -1,0 +1,33 @@
+-- Set up the environment
+SET linesize 120
+SET pagesize 35
+
+-- Set the date format for the session
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Define column formats and headings
+COLUMN Customer_ID FORMAT A30 HEADING "Customer Id";
+COLUMN C_Name FORMAT A30 HEADING "Name";
+COLUMN Booking_Count HEADING "Booking Count";
+
+-- Set up report title and page numbering
+TTITLE LEFT '               Customers Who Have Made Multiple Bookings'-
+RIGHT 'Page No: ' FORMAT 999 SQL.PNO SKIP 2
+
+-- Set up a break on the customer id
+BREAK ON Customer_ID SKIP 1
+
+-- Select statement 
+SELECT 	C.Customer_ID, 
+		C.C_Name, 
+		COUNT(B.Booking_ID) AS Booking_Count
+FROM		Customer C
+JOIN 		Booking B ON C.Customer_ID = B.Customer_ID
+GROUP BY	C.Customer_ID, C.C_Name
+HAVING 		COUNT(B.Booking_ID) > 1
+ORDER BY 	C.Customer_ID;
+
+-- Clear formatting and titles
+CLEAR COLUMNS
+CLEAR BREAKS
+TTITLE OFF

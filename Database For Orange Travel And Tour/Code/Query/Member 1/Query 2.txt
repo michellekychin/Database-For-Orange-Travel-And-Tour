@@ -1,0 +1,44 @@
+-- Prompt for user input
+ACCEPT DirectorName PROMPT 'Enter Director Name(leave blank to list all the directors with assigned packages): '
+
+-- Set up the environment
+SET linesize 120
+SET pagesize 35
+
+-- Set the date format for the session
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Define column formats and headings
+COLUMN D_Name FORMAT A20 HEADING "Director Name";
+COLUMN D_Gender FORMAT A7 HEADING "Gender";
+COLUMN D_PhoneNo FORMAT A11 HEADING "Phone No";
+COLUMN Activity FORMAT A25 HEADING "Package Activity";
+COLUMN Location FORMAT A40 HEADING "Package Location";
+
+-- Set up report title and page numbering
+TTITLE CENTER 'Tour Director Detail with Assigned Packages' -
+RIGHT 'Page No: ' FORMAT 999 SQL.PNO SKIP 2
+
+-- Set up a break on the director name
+BREAK ON D_Name ON D_Gender ON D_PhoneNo SKIP 2
+
+-- Select statement with optional filtering based on user input
+SELECT 
+    td.D_Name, 
+    td.D_Gender,
+    td.D_PhoneNo, 
+    P.Activity,
+    P.Location
+FROM 
+    Tour_Director td
+JOIN 
+    Tour_Allocation ta ON td.Director_ID = ta.Director_ID
+JOIN 
+    Package P ON ta.Package_ID = P.Package_ID
+WHERE 
+    (td.D_Name = '&DirectorName' OR '&DirectorName' IS NULL);
+
+-- Clear formatting and titles
+CLEAR COLUMNS
+CLEAR BREAKS
+TTITLE OFF

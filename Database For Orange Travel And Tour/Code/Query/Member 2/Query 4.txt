@@ -1,0 +1,36 @@
+-- Set up the environment
+SET linesize 120
+SET pagesize 35
+
+-- Set the date format for the session
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Define column formats and headings
+COLUMN Booking_Count HEADING "Booking Count";
+COLUMN Month HEADING "Booking Month" ;
+
+-- Set up report title and page numbering
+TTITLE LEFT '           Customer Bookings by Month'-
+RIGHT 'Page No: ' FORMAT 999 SQL.PNO SKIP 2
+
+-- Set up a break on the booking count
+BREAK ON Booking_Count SKIP 1
+
+-- Select statement 
+SELECT	
+	TO_CHAR(B.B_Date, 'Month') AS Month,
+	COUNT(B.Booking_ID) AS Booking_Count
+FROM	
+	Booking B
+JOIN	
+	Customer C ON B.Customer_ID = C.Customer_ID
+GROUP BY
+	TO_CHAR(B.B_Date, 'Month')
+ORDER BY
+	TO_CHAR(B.B_Date, 'Month');
+
+-- Clear formatting and titles 	
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+TTITLE OFF

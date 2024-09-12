@@ -1,0 +1,49 @@
+-- Prompt for user input
+ACCEPT PackageID PROMPT 'Enter Package ID(leave blank to list all the packages): '
+
+-- Set up the environment
+SET linesize 120
+SET pagesize 35
+
+-- Set the date format for the session
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Define column formats and headings
+COLUMN Package_ID FORMAT A12 HEADING "Package Id";
+COLUMN Activity FORMAT A20 HEADING "Package Activity" ;
+COLUMN Location FORMAT A38 HEADING "Package Location";
+COLUMN Price FORMAT 999999.99 HEADING "Price (RM)";
+COLUMN Total_Booking FORMAT A15 HEADING "Total Booking";
+
+-- Set up report title and page numbering
+TTITLE CENTER 'Total Number of Bookings for Each Packages'-
+RIGHT 'Page No: ' FORMAT 999 SQL.PNO SKIP 2
+
+-- Set up a break on the package id
+BREAK ON Package_ID SKIP 2
+
+-- Select statement with optional filtering based on user input
+SELECT 		
+	P.Package_ID, 
+	P.Activity, 
+	P.Location, 
+	P.Price, 
+	COUNT(B.Booking_ID) AS "Total Booking"
+FROM		
+	Package P
+LEFT JOIN	
+	Booking B ON P.Package_ID = B.Package_ID
+GROUP BY	
+	P.Package_ID, 
+	P.Activity, 
+	P.Location, 
+	P.Price
+HAVING 
+	(P.Package_ID = '&PackageID' OR '&PackageID' IS NULL)
+ORDER BY 
+	P.Package_ID;
+
+-- Clear formatting and titles
+CLEAR COLUMNS
+CLEAR BREAKS
+TTITLE OFF

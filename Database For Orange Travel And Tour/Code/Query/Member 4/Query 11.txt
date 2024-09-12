@@ -1,0 +1,41 @@
+-- Set up the environment
+SET linesize 120
+SET pagesize 35
+
+-- Set the date format for the session
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Define column formats and headings
+COLUMN Feedback_ID FORMAT A15 HEADING "Feedback Id";
+COLUMN C_Name FORMAT A20 HEADING "Name";
+COLUMN Rating FORMAT A10 HEADING "Rating" ;
+COLUMN Comments FORMAT A50 HEADING "Comments";
+COLUMN F_Date FORMAT A15 HEADING "Feedback Date";
+
+-- Set up report title and page numbering
+TTITLE CENTER 'Feedback From Customers'-
+RIGHT 'Page No: ' FORMAT 999 SQL.PNO SKIP 2
+
+-- Set up a break on the customer id
+BREAK ON Comments SKIP 1
+
+-- Select statement 
+SELECT 		
+	F.Feedback_ID, 
+	C.C_Name, 
+	F.Rating, 
+	F.Comments, 
+	F.F_Date
+FROM		
+	Feedback F
+JOIN	
+	Customer C ON F.Customer_ID = C.Customer_ID
+WHERE 	
+	F.Rating IN (1, 2, 3)
+ORDER BY
+ 	Rating DESC;
+
+-- Clear formatting and titles
+CLEAR COLUMNS
+CLEAR BREAKS
+TTITLE OFF

@@ -1,0 +1,1260 @@
+create table Feedback (
+	Feedback_ID	char(5)		not null,
+	Customer_ID	char(5) 	not null,
+	Rating		char(1),
+	Comments	varchar(255),
+	F_Date		date		not null,
+primary key(Feedback_ID),
+foreign key(Customer_ID)  references Customer(Customer_ID)
+);
+
+create table Customer (
+	Customer_ID	char(5)		not null,
+	C_Name		varchar(20)	not null,
+	C_Gender	char(1)		not null,
+	C_PhoneNo	varchar(10)	not null,
+	PassportNo	varchar(20)	not null,
+	VisaNo		varchar(20)	not null,
+primary key(Customer_ID),
+constraint chk_C_Gender check (UPPER(C_Gender) in ('M','F'))
+);
+
+create table Cancellation (
+	Cancellation_ID		char(5) 	not null,
+	Booking_ID		char(5)		not null,
+	C_Date			date		not null,
+primary key(Cancellation_ID),
+foreign key(Booking_ID)  references Booking(Booking_ID)
+);
+
+create table Booking (
+	Booking_ID		char(5)		not null,
+	Customer_ID		char(5),
+	Package_ID		char(5),
+	B_Date			date		not null,
+	Quantity		char(5) 	not null,
+primary key(Booking_ID),
+foreign key(Customer_ID)  references Customer(Customer_ID),
+foreign key(Package_ID)  references Package(Package_ID)
+);
+
+create table Tour_Director (
+	Director_ID		char(5)		not null,
+	D_Name			varchar(20)	not null,
+	D_Gender		char(1)		not null,
+	D_PhoneNo		varchar(10)	not null,
+primary key(Director_ID),
+constraint chk_D_Gender check (UPPER(D_Gender) in ('M','F'))
+);
+
+create table Tour_Allocation (
+	Director_ID		char(5)		not null,
+	Package_ID		char(5) 	not null,
+	Start_Date		date		not null,
+	End_Date		date		not null,
+primary key(Director_ID,Package_ID),
+foreign key(Director_ID)  references Tour_Director(Director_ID),
+foreign key(Package_ID)  references Package(Package_ID)
+);
+
+create table Staff (
+	Staff_ID		char(5)		not null,
+	S_Name			varchar(20)	not null,
+	S_Gender		char(1)		not null,
+	S_PhoneNo		varchar(10)	not null,
+primary key(Staff_ID),
+constraint chk_S_Gender check (UPPER(S_Gender) in ('M','F'))
+);
+
+create table Schedule (
+	Schedule_ID		char(5)		 not null,
+	Booking_ID		char(5)		 not null,
+	Guide			varchar(20)   	 not null,
+	Sc_Date			date		 not null,
+	Transportation		varchar(20)	 not null,
+primary key(Schedule_ID),
+foreign key(Booking_ID)  references Booking(Booking_ID)
+);
+
+create table Refund (
+	Refund_ID		char(5) 		not null,
+	Cancellation_ID		char(5) 		not null,
+	Amount			number(10,2)		not null,
+	R_Date			date			not null,
+primary key(Refund_ID),
+foreign key(Cancellation_ID)  references Cancellation(Cancellation_ID)
+);
+
+create table Package (
+	Package_ID		char(5)		not null,
+	Activity		varchar(50)	not null,
+	Location		varchar(50)	not null,
+	Price			number(10,2)	not null,
+	P_Date			date		not null,
+primary key(Package_ID)
+);
+
+create table Modification (
+	Staff_ID		char(5) 		not null,
+	Package_ID		char(5) 		not null,
+	Detail			varchar(255)	not null,
+	History			varchar(255)	not null,
+primary key(Staff_ID,Package_ID),
+foreign key(Staff_ID)  references Staff(Staff_ID),
+foreign key(Package_ID)  references Package(Package_ID)
+);
+
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (6, '5', 'Adjusted price to RM300.00', 'Price adjustment made on 10/03/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (4, '7', 'Updated tour guide information', 'Guide details updated on 20/12/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (7, '3', 'Included guided nature walk activity', 'Nature walk inclusion on 25/06/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (9, '1', 'Change departure date to 21/08/2023', 'Date modification recorded on 10/01/2023');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (2, '10', 'Updated transportation details', 'Transportation information updated on 22/02/2023');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (10, '9', 'Added wildlife spotting excursion', 'Wildlife spotting activity added on 20/03/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (2, '6', 'Included snorkeling excursion', 'Snorkeling activity added on 15/05/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (5, '7', 'Adjusted diving schedule for better weather conditions', 'Schedule adjustment on 01/02/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (9, '4', 'Updated activity schedule', 'Activity schedule updated on 28/05/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (6, '2', 'Adjusted itinerary to include traditional tea ceremony', 'Tea ceremony added on 10/11/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (2, '8', 'Included ski lesson with certified instructor', 'Ski lesson added on 15/09/2022');
+
+
+
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (7, '4', 'Adjusted tour itinerary to include local markets visit', 'Itinerary adjustment made on 17/11/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (8, '9', 'Included sunset cruise in package activities', 'Sunset cruise added on 03/08/2023');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (10, '6', 'Updated hiking trail map', 'Trail map updated on 12/10/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (1, '8', 'Changed accommodation to mountain lodge', 'Accommodation change made on 20/02/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (5, '1', 'Adjusted departure time for early morning departure', 'Departure time adjusted on 28/09/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (2, '5', 'Included horseback riding experience', 'Horseback riding added on 05/11/2021');
+
+
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (6, '7', 'Adjusted diving schedule to avoid peak hours', 'Diving schedule adjusted on 09/06/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (3, '2', 'Included guided museum tour', 'Museum tour added on 25/01/2023');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (4, '3', 'Changed departure date to accommodate customer requests', 'Departure date changed on 16/05/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (7, '10', 'Updated accommodation amenities list', 'Accommodation amenities updated on 08/12/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (1, '6', 'Added kayaking adventure', 'Kayaking adventure added on 10/04/2023');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (8, '2', 'Included guided bike tour', 'Bike tour added on 06/03/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (10, '8', 'Adjusted ski lesson schedule', 'Lesson schedule adjusted on 19/11/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (3, '1', 'Updated accommodation booking details', 'Accommodation details updated on 23/07/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (5, '9', 'Changed departure location to city center', 'Departure location changed on 11/08/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (2, '7', 'Included scuba diving certification course', 'Scuba diving course added on 04/09/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (9, '3', 'Updated activity schedule for better timing', 'Activity schedule updated on 22/06/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (6, '10', 'Added wine tasting tour', 'Wine tasting tour added on 15/10/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (4, '5', 'Adjusted transportation pick-up time', 'Pick-up time adjusted on 07/12/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (7, '8', 'Included hot springs visit', 'Hot springs visit added on 29/03/2023');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (1, '2', 'Changed tour guide for better language proficiency', 'Guide changed on 02/05/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (8, '4', 'Updated activity equipment list', 'Equipment list updated on 25/09/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (3, '6', 'Included snorkeling excursion', 'Snorkeling excursion added on 18/07/2023');
+
+
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (9, '7', 'Updated diving spots for better marine life viewing', 'Diving spots updated on 13/02/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (6, '3', 'Adjusted departure time for afternoon departure', 'Departure time adjusted on 09/10/2021');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (4, '10', 'Included wine tasting session', 'Wine tasting session added on 04/01/2023');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (7, '2', 'Updated accommodation booking details', 'Accommodation details updated on 27/03/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (1, '5', 'Changed transportation provider for better service', 'Transportation provider changed on 19/05/2023');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (8, '6', 'Included surfing lesson with professional instructor', 'Surfing lesson added on 22/08/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (3, '9', 'Adjusted departure date for customer convenience', 'Departure date adjusted on 08/12/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (5, '4', 'Included guided birdwatching tour', 'Birdwatching tour added on 15/03/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (10, '3', 'Changed accommodation to beachside villa', 'Accommodation change made on 30/09/2021');
+
+
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (6, '8', 'Included wildlife photography tour', 'Photography tour added on 13/09/2023');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (4, '2', 'Changed transportation to private charter', 'Transportation changed on 05/11/2022');
+
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (1, '3', 'Updated tour guide information', 'Guide details updated on 03/03/2022');
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (8, '5', 'Included cultural village visit', 'Cultural village visit added on 06/05/2022');
+
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (5, '6', 'Adjusted activity schedule for better timing', 'Activity schedule adjusted on 22/10/2023');
+
+INSERT INTO Modification (Staff_ID, Package_ID, Detail, History) VALUES (2, '1', 'Updated accommodation booking details', 'Accommodation details updated on 28/12/2022');
+
+
+INSERT INTO Package (Package_ID, Activity, Location, Price, P_Date) VALUES (1, 'Island Hopping', 'Langkawi, Malaysia', '1500.00', '21-AUG-2023');
+
+INSERT INTO Package (Package_ID, Activity, Location, Price, P_Date) VALUES (2, 'Cultural Exploration', 'Kyoto, Japan', '3000.00', '16-MAR-2022');
+
+INSERT INTO Package (Package_ID, Activity, Location, Price, P_Date) VALUES (3, 'Safari Adventure', 'Kruger National Park, South Africa', '5000.00', '03-SEP-2022');
+
+INSERT INTO Package (Package_ID, Activity, Location, Price, P_Date) VALUES (4, 'Rainforest Trekking', 'Taman Negara, Pahang, Malaysia', '500.00', '22-JUL-2021');
+
+INSERT INTO Package (Package_ID, Activity, Location, Price, P_Date) VALUES (5, 'City Sightseeing', 'Kuala Lumpur, Malaysia', '300.00', '21-JUL-2022');
+
+INSERT INTO Package (Package_ID, Activity, Location, Price, P_Date) VALUES (6, 'Beach Relaxation', 'Penang Island, Malaysia', '700.00', '12-AUG-2021');
+
+INSERT INTO Package (Package_ID, Activity, Location, Price, P_Date) VALUES (7, 'Scuba Diving', 'Maldives', '4500.00', '02-FEB-2022');
+
+INSERT INTO Package (Package_ID, Activity, Location, Price, P_Date) VALUES (8, 'Skiing', 'Hokkaido, Japan', '6000.00', '12-FEB-2023');
+
+INSERT INTO Package (Package_ID, Activity, Location, Price, P_Date) VALUES (9, 'River Cruise', 'Kinabatangan River, Sabah, Malaysia', '400.00', '08-JUL-2021');
+
+INSERT INTO Package (Package_ID, Activity, Location, Price, P_Date) VALUES (10, 'Historical Tour', 'Athens, Greece', '5500.00', '09-MAR-2023');
+
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_Date) VALUES (1, 3, '3000.00', '07-FEB-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_Date) VALUES (2, 7, '15000.00', '04-FEB-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_Date) VALUES (3, 9, '4500.00', '03-JUL-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_Date) VALUES (4, 2, '27000.00', '27-DEC-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_Date) VALUES (5, 11, '36000.00', '10-NOV-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_Date) VALUES (6, 1, '45000.00', '05-AUG-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_Date) VALUES (7, 10, '2400.00', '02-JUN-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_Date) VALUES (8, 6, '2100.00', '22-MAY-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_Date) VALUES (9, 5, '5500.00', '23-JAN-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_Date) VALUES (10, 8, '36000.00', '03-AUG-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_Date) VALUES (11, 4, '3000.00', '30-SEP-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (12, 54, 8123, '01-Jan-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (13, 91, 18166, '30-Mar-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (14, 100, 14886, '03-Oct-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (15, 31, 8784, '07-Jan-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (16, 19, 4125, '18-Jun-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (17, 72, 6121, '14-Mar-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (18, 33, 19650, '02-Sep-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (19, 100, 5932, '14-Nov-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (20, 16, 3768, '09-Nov-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (21, 99, 18967, '23-Mar-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (22, 101, 15786, '05-Mar-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (23, 22, 1384, '05-Sep-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (24, 87, 19320, '04-Apr-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (25, 52, 7965, '08-Dec-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (26, 80, 5353, '16-Oct-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (27, 78, 18925, '15-Nov-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (28, 90, 14834, '12-Dec-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (29, 44, 15588, '16-Oct-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (30, 21, 1946, '22-Jun-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (31, 84, 3309, '19-Sep-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (32, 100, 5397, '03-Feb-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (33, 72, 19245, '27-Apr-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (34, 31, 19268, '22-Sep-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (35, 21, 13990, '23-Jan-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (36, 74, 5256, '16-Jun-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (37, 51, 11985, '03-Feb-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (38, 52, 16382, '21-Oct-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (39, 70, 5903, '18-Mar-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (40, 82, 1132, '31-Aug-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (41, 66, 19756, '04-Mar-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (42, 97, 1031, '13-May-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (43, 75, 7801, '29-Sep-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (44, 79, 15276, '24-Apr-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (45, 35, 15982, '23-Apr-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (46, 51, 2949, '23-Jun-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (47, 25, 11316, '03-Nov-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (48, 95, 14209, '03-Feb-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (49, 79, 11167, '18-Jan-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (50, 27, 11065, '18-Oct-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (51, 93, 7940, '29-Jul-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (52, 44, 6394, '08-Nov-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (53, 90, 17643, '30-Apr-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (54, 32, 18034, '14-Apr-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (55, 36, 14855, '04-Sep-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (56, 53, 1534, '03-Jul-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (57, 65, 14324, '08-Dec-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (58, 81, 13966, '26-Jun-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (59, 17, 12303, '09-Jan-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (60, 44, 8328, '28-Mar-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (61, 74, 14523, '18-Aug-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (62, 34, 19784, '05-Mar-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (63, 95, 12283, '03-Mar-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (64, 28, 4722, '13-Dec-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (65, 102, 9289, '22-Jan-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (66, 49, 6923, '29-May-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (67, 19, 2923, '26-Sep-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (68, 101, 5629, '06-Jun-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (69, 41, 5872, '17-Jul-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (70, 30, 7100, '18-Feb-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (71, 82, 11108, '02-Apr-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (72, 56, 3988, '02-Jul-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (73, 105, 17355, '09-Jan-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (74, 36, 8193, '27-Mar-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (75, 18, 10180, '20-Sep-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (76, 89, 3144, '15-Jun-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (77, 48, 17813, '10-Dec-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (78, 36, 12009, '21-Sep-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (79, 15, 11371, '20-Nov-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (80, 39, 7466, '16-Dec-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (81, 92, 8102, '26-Dec-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (82, 60, 10740, '14-Feb-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (83, 27, 3815, '20-Jan-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (84, 32, 14141, '03-Mar-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (85, 104, 14220, '19-Nov-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (86, 26, 8663, '26-Jan-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (87, 46, 12657, '06-Jan-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (88, 98, 12499, '07-Aug-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (89, 51, 11238, '19-Feb-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (90, 78, 6065, '28-Nov-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (91, 79, 2143, '01-Apr-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (92, 51, 15016, '09-Jun-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (93, 55, 15154, '26-Jun-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (94, 81, 2779, '29-Oct-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (95, 42, 19944, '30-Nov-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (96, 88, 8761, '02-Apr-2022');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (97, 102, 1857, '05-Jan-2021');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (98, 32, 4053, '09-Aug-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (99, 54, 6092, '25-Aug-2023');
+INSERT INTO Refund (Refund_ID, Cancellation_ID, Amount, R_date) VALUES (100, 54, 4667, '20-Aug-2022');
+
+INSERT INTO Schedule (Schedule_ID, Booking_ID, Guide, Sc_Date, Transportation) VALUES (1, 5, 'Cherin Pfiffer', '02-FEB-2022', 'Ferry');
+INSERT INTO Schedule (Schedule_ID, Booking_ID, Guide, Sc_Date, Transportation) VALUES (2, 4, 'Grata Garriock', '16-MAR-2022', 'Tour Bus');
+INSERT INTO Schedule (Schedule_ID, Booking_ID, Guide, Sc_Date, Transportation) VALUES (3, 7, 'Kirsten Reekie', '08-JUL-2021', 'Boat'); 
+INSERT INTO Schedule (Schedule_ID, Booking_ID, Guide, Sc_Date, Transportation) VALUES (4, 2, 'Olivette Houlridge', '09-MAR-2023', 'Ferry');  
+INSERT INTO Schedule (Schedule_ID, Booking_ID, Guide, Sc_Date, Transportation) VALUES (5, 3, 'Grata Garriock', '02-FEB-2022', 'Tour Bus');
+INSERT INTO Schedule (Schedule_ID, Booking_ID, Guide, Sc_Date, Transportation) VALUES (6, 6, 'Austen Gonzalez', '03-SEP-2022', 'Boat');
+INSERT INTO Schedule (Schedule_ID, Booking_ID, Guide, Sc_Date, Transportation) VALUES (7, 9, 'Rafa Raphael', '21-JUL-2022', 'Tour Bus');
+INSERT INTO Schedule (Schedule_ID, Booking_ID, Guide, Sc_Date, Transportation) VALUES (8, 1, 'Cherin Pfiffer', '12-FEB-2023', 'Tour Bus');
+INSERT INTO Schedule (Schedule_ID, Booking_ID, Guide, Sc_Date, Transportation) VALUES (9, 10, 'Filide Longstaff', '02-FEB-2022', 'Dive Boats');
+INSERT INTO Schedule (Schedule_ID, Booking_ID, Guide, Sc_Date, Transportation) VALUES (10, 11, 'Bondon Hammerberg', '16-MAR-2022', 'Tour Bus');
+INSERT INTO Schedule (Schedule_ID, Booking_ID, Guide, Sc_Date, Transportation) VALUES (11, 8, 'Austen', '16-MAR-2022', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (12, 202, 'Filide Longstaff', '02-Apr-2022', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (13, 37, 'Bondon Hammerberger', '06-Sep-2021', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (14, 95, 'Bondon Hammerberger', '08-May-2021', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (15, 270, 'Grata Garriock', '03-Sep-2023', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (16, 79, 'Olivette Houlridge', '09-Dec-2023', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (17, 167, 'Austen Gonzalez', '02-Aug-2021', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (18, 436, 'Kirsten Reekie', '23-Dec-2022', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (19, 194, 'Filide Longstaff', '07-May-2022', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (20, 216, 'Ruby Coslett', '12-Aug-2023', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (21, 261, 'Rosa Gawthorp', '06-Mar-2021', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (22, 36, 'Kirsten Reekie', '21-Aug-2023', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (23, 262, 'Ruby Coslett', '13-Feb-2023', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (24, 445, 'Rafa Raphael', '12-Jan-2023', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (25, 211, 'Austen Gonzalez', '24-Apr-2023', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (26, 144, 'Cherin Pfiffer', '17-May-2022', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (27, 195, 'Cherin Pfiffer', '06-Feb-2021', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (28, 383, 'Cherin Pfiffer', '27-Sep-2023', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (29, 261, 'Bondon Hammerberger', '18-Sep-2021', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (30, 201, 'Rosa Gawthorp', '04-Dec-2021', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (31, 314, 'Ruby Coslett', '10-Aug-2021', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (32, 226, 'Austen Gonzalez', '07-Jul-2022', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (33, 429, 'Ruby Coslett', '09-May-2023', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (34, 342, 'Cherin Pfiffer', '02-Aug-2022', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (35, 377, 'Austen Gonzalez', '05-Jun-2022', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (36, 339, 'Bondon Hammerberger', '07-Sep-2023', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (37, 452, 'Kirsten Reekie', '15-Jan-2021', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (38, 423, 'Bondon Hammerberger', '30-Nov-2023', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (39, 280, 'Filide Longstaff', '08-Mar-2022', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (40, 76, 'Rosa Gawthorp', '06-Sep-2022', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (41, 85, 'Ruby Coslett', '21-Aug-2023', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (42, 101, 'Rosa Gawthorp', '11-Dec-2022', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (43, 133, 'Filide Longstaff', '06-May-2022', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (44, 474, 'Olivette Houlridge', '28-Apr-2022', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (45, 395, 'Kirsten Reekie', '04-Jun-2022', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (46, 273, 'Bondon Hammerberger', '05-Mar-2023', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (47, 401, 'Rafa Raphael', '26-Nov-2022', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (48, 285, 'Kirsten Reekie', '23-Jan-2022', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (49, 58, 'Olivette Houlridge', '19-Jun-2023', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (50, 175, 'Olivette Houlridge', '09-Feb-2021', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (51, 460, 'Grata Garriock', '07-Dec-2021', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (52, 77, 'Filide Longstaff', '29-Nov-2022', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (53, 184, 'Kirsten Reekie', '21-Jan-2021', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (54, 490, 'Grata Garriock', '04-Nov-2022', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (55, 329, 'Olivette Houlridge', '21-Oct-2021', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (56, 113, 'Austen Gonzalez', '12-Feb-2023', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (57, 213, 'Ruby Coslett', '10-Jun-2022', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (58, 425, 'Rafa Raphael', '12-Dec-2023', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (59, 445, 'Ruby Coslett', '25-Aug-2022', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (60, 283, 'Cherin Pfiffer', '17-Dec-2021', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (61, 61, 'Cherin Pfiffer', '04-Dec-2022', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (62, 55, 'Cherin Pfiffer', '13-Apr-2021', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (63, 247, 'Austen Gonzalez', '24-Feb-2023', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (64, 331, 'Rosa Gawthorp', '12-Dec-2023', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (65, 284, 'Rafa Raphael', '14-Dec-2023', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (66, 458, 'Rafa Raphael', '20-Nov-2021', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (67, 215, 'Austen Gonzalez', '23-Nov-2023', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (68, 455, 'Bondon Hammerberger', '24-Nov-2022', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (69, 208, 'Filide Longstaff', '23-Mar-2021', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (70, 390, 'Austen Gonzalez', '21-Oct-2022', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (71, 343, 'Ruby Coslett', '30-Aug-2021', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (72, 414, 'Rosa Gawthorp', '11-Feb-2022', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (73, 14, 'Bondon Hammerberger', '11-Aug-2022', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (74, 305, 'Grata Garriock', '01-Aug-2021', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (75, 230, 'Rosa Gawthorp', '11-Apr-2022', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (76, 447, 'Kirsten Reekie', '12-Feb-2022', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (77, 357, 'Kirsten Reekie', '20-Oct-2023', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (78, 169, 'Rosa Gawthorp', '28-Apr-2021', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (79, 185, 'Rafa Raphael', '21-May-2021', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (80, 192, 'Rafa Raphael', '19-Mar-2021', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (81, 98, 'Austen Gonzalez', '02-Apr-2021', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (82, 333, 'Cherin Pfiffer', '13-Mar-2023', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (83, 139, 'Austen Gonzalez', '19-Jun-2022', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (84, 276, 'Filide Longstaff', '21-Sep-2023', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (85, 194, 'Rosa Gawthorp', '07-Apr-2022', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (86, 21, 'Filide Longstaff', '19-May-2023', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (87, 363, 'Austen Gonzalez', '25-Sep-2021', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (88, 356, 'Bondon Hammerberger', '09-Apr-2023', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (89, 302, 'Austen Gonzalez', '21-Oct-2023', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (90, 111, 'Grata Garriock', '09-Sep-2021', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (91, 154, 'Grata Garriock', '27-Jul-2021', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (92, 260, 'Ruby Coslett', '18-May-2022', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (93, 22, 'Grata Garriock', '09-Feb-2021', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (94, 15, 'Grata Garriock', '15-Feb-2022', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (95, 221, 'Cherin Pfiffer', '05-Jan-2021', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (96, 363, 'Austen Gonzalez', '28-Jul-2023', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (97, 289, 'Kirsten Reekie', '11-Aug-2023', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (98, 383, 'Olivette Houlridge', '13-Dec-2023', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (99, 384, 'Rosa Gawthorp', '10-Mar-2023', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (100, 149, 'Kirsten Reekie', '18-Nov-2021', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (101, 269, 'Rosa Gawthorp', '24-Jul-2022', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (102, 249, 'Rafa Raphael', '03-Feb-2021', 'Ferry');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (103, 339, 'Ruby Coslett', '04-Mar-2023', 'Boat');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (104, 329, 'Grata Garriock', '20-Feb-2022', 'Tour Bus');
+insert into Schedule (Schedule_id, Booking_id, Guide, Sc_date, Transportation) values (105, 403, 'Olivette Houlridge', '24-Apr-2023', 'Ferry');
+
+INSERT INTO Staff (Staff_ID, S_Name, S_Gender, S_PhoneNO) VALUES (1, 'Jeanine Mallett', 'F', '0102555844');
+
+INSERT INTO Staff (Staff_ID, S_Name, S_Gender, S_PhoneNO) VALUES (2, 'Kacie Blas', 'F', '0376928256');
+
+INSERT INTO Staff (Staff_ID, S_Name, S_Gender, S_PhoneNO) VALUES (3, 'Cy Ottey', 'M', '0952214966');
+
+INSERT INTO Staff (Staff_ID, S_Name, S_Gender, S_PhoneNO) VALUES (4, 'Marje Ritchie', 'F', '0932141991');
+
+INSERT INTO Staff (Staff_ID, S_Name, S_Gender, S_PhoneNO) VALUES (5, 'Buckie Luke', 'M', '0568343555');
+
+INSERT INTO Staff (Staff_ID, S_Name, S_Gender, S_PhoneNO) VALUES (6, 'Simeon Loftin', 'M', '0689310078');
+
+INSERT INTO Staff (Staff_ID, S_Name, S_Gender, S_PhoneNO) VALUES (7, 'Caitlin Volante', 'M', '0542393260');
+
+INSERT INTO Staff (Staff_ID, S_Name, S_Gender, S_PhoneNO) VALUES (8, 'Field Bilbrey', 'M', '0253454015');
+
+INSERT INTO Staff (Staff_ID, S_Name, S_Gender, S_PhoneNO) VALUES (9, 'Ted Burstow', 'F', '0188443547');
+
+INSERT INTO Staff (Staff_ID, S_Name, S_Gender, S_PhoneNO) VALUES (10, 'Barby Tripon', 'M', '0301837524');
+
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (1, 5, '21-JUL-2022', '24-JUL-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (2, 3, '03-SEP-2022', '06-SEP-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (3, 6, '12-AUG-2021', '15-AUG-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (4, 10, '09-MAR-2023', '12-MAR-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (5, 8, '12-FEB-2023', '15-FEB-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (6, 2, '16-MAR-2022', '19-MAR-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (7, 9, '08-JUL-2021', '11-JUL-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (8, 1, '21-AUG-2023', '24-AUG-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (9, 7, '02-FEB-2022', '05-FEB-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (10, 4, '22-JUL-2021', '25-JUL-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (5, 3, '03-SEP-2022', '06-SEP-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (1, 10, '16-Jul-2022', '22-Aug-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (1, 7, '17-Dec-2023', '06-Apr-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (9, 6, '15-Dec-2022', '12-Jan-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (9, 5, '09-May-2022', '19-Apr-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (2, 9, '05-Jul-2023', '15-Jun-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (5, 5, '11-Jun-2022', '22-Oct-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (8, 5, '19-Mar-2021', '19-Nov-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (10, 2, '14-Aug-2023', '18-Mar-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (1, 6, '28-Oct-2022', '27-Oct-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (1, 4, '29-Aug-2021', '04-Oct-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (4, 8, '08-Nov-2023', '02-Aug-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (3, 3, '26-Mar-2021', '13-Nov-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (7, 8, '01-May-2022', '05-Nov-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (6, 1, '11-Dec-2021', '08-Apr-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (3, 4, '13-Jun-2021', '15-Feb-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (7, 10, '21-Nov-2021', '26-Feb-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (4, 9, '21-Dec-2022', '25-Jun-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (10, 7, '20-May-2023', '20-Feb-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (10, 3, '16-Aug-2023', '17-Feb-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (6, 8, '28-Aug-2023', '25-Mar-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (6, 6, '09-Jul-2023', '04-Dec-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (3, 9, '18-Nov-2022', '13-Jul-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (2, 6, '19-Aug-2022', '27-Mar-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (2, 2, '18-Oct-2021', '24-Jun-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (1, 8, '14-Oct-2023', '28-Mar-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (1, 9, '15-Jun-2021', '27-Sep-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (5, 2, '30-Apr-2021', '15-Oct-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (8, 9, '04-Jun-2023', '15-Mar-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (8, 7, '21-Feb-2021', '10-Jun-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (3, 1, '22-Jun-2023', '29-Jul-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (6, 9, '03-May-2022', '07-Apr-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (7, 3, '27-Oct-2022', '06-Oct-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (10, 10, '26-Jan-2021', '08-Mar-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (3, 8, '02-Apr-2021', '16-Jun-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (7, 6, '12-Aug-2021', '30-Jun-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (10, 1, '29-Jun-2022', '01-May-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (4, 2, '11-Nov-2023', '20-Apr-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (10, 6, '05-Apr-2021', '05-Feb-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (3, 2, '19-Feb-2022', '24-Aug-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (8, 8, '14-Mar-2021', '21-Dec-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (9, 10, '25-May-2023', '22-Jun-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (8, 3, '05-Mar-2021', '07-Oct-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (4, 6, '11-Nov-2022', '10-Sep-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (5, 4, '05-Dec-2021', '29-Jun-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (3, 10, '29-Jan-2021', '12-Feb-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (4, 3, '08-Aug-2021', '20-Jan-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (4, 1, '07-Feb-2021', '28-Jan-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (7, 1, '27-Jul-2022', '24-Feb-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (4, 5, '07-Apr-2021', '24-Mar-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (1, 1, '13-Sep-2022', '08-Aug-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (5, 7, '02-Oct-2021', '30-Aug-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (2, 10, '19-Sep-2022', '22-Nov-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (7, 5, '20-Mar-2023', '28-Aug-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (5, 9, '06-Jul-2023', '16-Jan-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (7, 2, '17-Jul-2023', '14-Jun-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (5, 10, '10-Feb-2022', '05-Nov-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (3, 5, '23-Sep-2021', '11-Feb-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (10, 8, '14-Sep-2021', '06-May-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (9, 2, '09-Jan-2022', '05-Jan-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (9, 4, '30-Nov-2022', '16-Aug-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (2, 4, '01-Aug-2023', '21-Dec-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (8, 10, '04-Aug-2021', '19-May-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (9, 9, '27-Aug-2021', '26-May-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (2, 8, '25-Jun-2021', '12-Jul-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (4, 7, '08-Nov-2021', '17-Jun-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (9, 3, '21-Jul-2021', '06-Oct-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (8, 6, '26-Nov-2021', '14-Jan-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (3, 7, '04-May-2023', '29-May-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (6, 5, '16-Oct-2023', '26-Jul-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (6, 7, '02-Jan-2021', '23-Sep-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (10, 5, '15-Nov-2021', '23-Feb-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (7, 4, '05-May-2021', '01-Dec-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (7, 7, '07-Sep-2022', '30-Dec-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (1, 2, '11-Jan-2021', '18-Aug-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (8, 2, '20-Mar-2021', '06-Nov-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (2, 1, '07-Mar-2021', '27-Apr-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (6, 10, '07-Mar-2021', '03-Dec-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (5, 6, '15-Jan-2023', '27-Aug-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (9, 8, '20-Apr-2022', '03-Oct-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (2, 7, '20-May-2022', '21-Oct-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (10, 9, '07-Sep-2022', '25-Aug-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (5, 1, '20-Oct-2023', '05-Feb-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (9, 1, '11-Jul-2022', '22-Mar-2022');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (8, 4, '03-Sep-2021', '22-Jan-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (6, 4, '07-Mar-2021', '29-May-2023');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (6, 3, '19-May-2021', '06-Aug-2021');
+INSERT INTO Tour_Allocation (Director_ID, Package_ID, Start_Date, End_Date) VALUES (2, 5, '15-Jun-2023', '09-May-2023');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (1, 'Cherin Pfiffer', 'F', '0326205640');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (2, 'Olivette Houlridge', 'F', '0685540603');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (3, 'Bondon Hammerberger', 'M', '0574892004');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (4, 'Grata Garriock', 'F', '0959300825');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (5, 'Ruby Coslett', 'F', '0492021686');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (6, 'Austen Gonzalez', 'F', '0735920090');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (7, 'Kirsten Reekie', 'M', '0171164996');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (8, 'Rosa Gawthorp', 'F', '0526436046');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (9, 'Rafa Raphael', 'M', '0861458537');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (10, 'Filide Longstaff', 'F', '0251392482');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (11, 'Evangeline Raff', 'F', '0782045712');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (12, 'Cassia Delafoy', 'F', '0367921014');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (13, 'Thadeus Parkins', 'M', '0654389271');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (14, 'Verena Dempster', 'F', '0935612847');
+
+INSERT INTO Tour_Director (Director_ID, D_Name, D_Gender, D_PhoneNo) VALUES (15, 'Aurelia Meadowcroft', 'F', '0418279065');
+INSERT INTO Booking (Booking_ID, Customer_ID, Package_ID, B_Date, Quantity) VALUES (1, 4, 8, '11-OCT-2022', '6');
+INSERT INTO Booking (Booking_ID, Customer_ID, Package_ID, B_Date, Quantity) VALUES (2, 3, 10, '04-DEC-2022', '1');
+INSERT INTO Booking (Booking_ID, Customer_ID, Package_ID, B_Date, Quantity) VALUES (3, 5, 7, '06-DEC-2021', '6');
+INSERT INTO Booking (Booking_ID, Customer_ID, Package_ID, B_Date, Quantity) VALUES (4, 1, 2, '23-JAN-2022', '1');
+INSERT into Booking (Booking_ID, Customer_ID, Package_ID, B_Date, Quantity) VALUES (5, 2, 7, '12-JUN-2021', '1');
+INSERT INTO Booking (Booking_ID, Customer_ID, Package_ID, B_Date, Quantity) VALUES (6, 1, 3, '14-JUL-2022', '9');
+INSERT INTO Booking (Booking_ID, Customer_ID, Package_ID, B_Date, Quantity) VALUES (7, 5, 9, '12-MAY-2021', '6');
+INSERT INTO Booking (Booking_ID, Customer_ID, Package_ID, B_Date, Quantity) VALUES (8, 3, 2, '07-SEP-2021', '1');
+INSERT INTO Booking (Booking_ID, Customer_ID, Package_ID, B_Date, Quantity) VALUES (9, 1, 5, '26-APR-2022', '7');
+INSERT INTO Booking (Booking_ID, Customer_ID, Package_ID, B_Date, Quantity) VALUES (10, 4, 7, '11-JUL-2021', '8');
+INSERT INTO Booking (Booking_ID, Customer_ID, Package_ID, B_Date, Quantity) VALUES (11, 3, 2, '11-JAN-2022', '5');
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (12, 2, 7, '18-Jun-2021', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (13, 6, 8, '20-Sep-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (14, 5, 7, '11-Aug-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (15, 8, 5, '16-Aug-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (16, 5, 10, '31-May-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (17, 10, 3, '31-Jan-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (18, 8, 7, '09-Jan-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (19, 10, 5, '19-Mar-2021', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (20, 8, 7, '01-Mar-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (21, 4, 7, '16-Jul-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (22, 3, 7, '20-Jun-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (23, 4, 8, '16-Aug-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (24, 4, 10, '16-May-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (25, 2, 7, '04-Jan-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (26, 7, 5, '20-Mar-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (27, 1, 2, '02-May-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (28, 8, 3, '20-Nov-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (29, 7, 3, '19-Feb-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (30, 5, 7, '06-Mar-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (31, 6, 10, '21-Feb-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (32, 3, 2, '17-Dec-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (33, 9, 7, '23-Feb-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (34, 3, 7, '14-Feb-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (35, 8, 3, '02-Dec-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (36, 9, 5, '06-Nov-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (37, 2, 10, '29-Sep-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (38, 1, 2, '06-Dec-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (39, 4, 10, '25-Mar-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (40, 4, 2, '11-Sep-2022', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (41, 9, 2, '16-Nov-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (42, 10, 7, '03-Aug-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (43, 6, 2, '08-Mar-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (44, 9, 2, '21-Nov-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (45, 9, 9, '30-Oct-2022', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (46, 1, 5, '07-Feb-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (47, 4, 7, '21-Jan-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (48, 6, 10, '24-Jun-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (49, 10, 10, '23-Feb-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (50, 6, 8, '26-May-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (51, 10, 7, '06-Oct-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (52, 10, 3, '03-Jun-2021', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (53, 9, 3, '26-Sep-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (54, 9, 7, '30-Nov-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (55, 8, 2, '19-Oct-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (56, 8, 8, '26-Jan-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (57, 10, 7, '17-Jul-2022', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (58, 10, 5, '27-Nov-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (59, 5, 2, '19-Jan-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (60, 10, 7, '18-Oct-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (61, 9, 9, '19-Apr-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (62, 10, 5, '18-Mar-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (63, 10, 5, '09-Jul-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (64, 6, 10, '21-Apr-2021', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (65, 7, 8, '07-May-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (66, 4, 5, '10-Jun-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (67, 8, 3, '20-Mar-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (68, 1, 10, '03-Nov-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (69, 2, 2, '27-Oct-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (70, 4, 7, '08-May-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (71, 6, 10, '29-Sep-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (72, 4, 2, '10-Sep-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (73, 10, 10, '20-Apr-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (74, 6, 9, '03-May-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (75, 9, 2, '06-Oct-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (76, 1, 5, '26-Feb-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (77, 4, 5, '30-Jan-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (78, 3, 9, '03-Feb-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (79, 1, 10, '23-Jun-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (80, 9, 7, '19-Aug-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (81, 1, 3, '18-May-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (82, 7, 5, '04-Dec-2023', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (83, 4, 2, '09-Jan-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (84, 6, 10, '03-Oct-2023', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (85, 10, 9, '06-Jan-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (86, 5, 8, '20-Mar-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (87, 5, 3, '28-Jul-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (88, 10, 8, '22-May-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (89, 5, 2, '31-Oct-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (90, 9, 7, '12-Mar-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (91, 8, 8, '18-Dec-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (92, 1, 9, '03-Jul-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (93, 8, 2, '29-May-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (94, 5, 10, '20-May-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (95, 4, 2, '02-Apr-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (96, 7, 9, '16-Apr-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (97, 1, 2, '06-Nov-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (98, 1, 10, '26-Mar-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (99, 1, 8, '26-Aug-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (100, 2, 9, '20-Jan-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (101, 10, 5, '27-Jul-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (102, 5, 7, '26-Sep-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (103, 9, 8, '17-Dec-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (104, 6, 2, '19-Dec-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (105, 8, 7, '21-Nov-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (106, 9, 10, '22-Nov-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (107, 2, 7, '29-Dec-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (108, 1, 3, '04-Dec-2022', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (109, 8, 10, '07-Apr-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (110, 7, 5, '29-Jan-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (111, 3, 7, '05-Aug-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (112, 6, 9, '14-Jul-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (113, 7, 8, '01-Mar-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (114, 8, 2, '12-Dec-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (115, 3, 9, '02-Apr-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (116, 10, 10, '18-Jul-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (117, 2, 9, '14-Nov-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (118, 2, 7, '06-Jan-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (119, 3, 3, '15-Mar-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (120, 6, 3, '07-Jan-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (121, 7, 8, '30-Aug-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (122, 8, 7, '25-Feb-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (123, 8, 5, '05-Feb-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (124, 5, 10, '31-Dec-2022', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (125, 9, 2, '23-Apr-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (126, 9, 8, '13-Jun-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (127, 6, 2, '06-Jun-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (128, 3, 3, '07-Apr-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (129, 9, 2, '29-Apr-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (130, 6, 7, '18-Sep-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (131, 1, 8, '22-Mar-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (132, 10, 3, '12-Jun-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (133, 9, 8, '13-May-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (134, 8, 2, '28-Sep-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (135, 9, 8, '11-Mar-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (136, 10, 2, '22-Feb-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (137, 8, 3, '20-Oct-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (138, 7, 8, '17-Dec-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (139, 1, 2, '12-Sep-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (140, 7, 10, '05-Oct-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (141, 7, 5, '28-Nov-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (142, 7, 2, '14-Oct-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (143, 8, 5, '11-Jan-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (144, 1, 8, '17-Jan-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (145, 8, 7, '15-Feb-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (146, 5, 3, '23-May-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (147, 7, 10, '28-Jun-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (148, 6, 9, '18-Sep-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (149, 8, 9, '25-Apr-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (150, 5, 3, '25-Feb-2022', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (151, 4, 7, '02-Feb-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (152, 1, 7, '23-Nov-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (153, 9, 8, '02-Jul-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (154, 10, 2, '16-Aug-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (155, 6, 10, '07-Jan-2021', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (156, 5, 9, '04-Jan-2022', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (157, 2, 3, '20-Apr-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (158, 7, 5, '12-May-2022', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (159, 9, 10, '13-Oct-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (160, 3, 2, '03-Jan-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (161, 5, 9, '07-Jul-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (162, 1, 3, '26-Oct-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (163, 4, 9, '30-Sep-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (164, 8, 10, '29-Nov-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (165, 6, 9, '27-Jul-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (166, 8, 9, '27-Apr-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (167, 6, 2, '09-Nov-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (168, 8, 10, '31-Oct-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (169, 4, 2, '16-Jul-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (170, 6, 9, '06-Dec-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (171, 9, 8, '09-Jan-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (172, 8, 5, '01-Apr-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (173, 9, 5, '02-May-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (174, 3, 7, '13-Aug-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (175, 2, 2, '12-Feb-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (176, 8, 7, '14-Nov-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (177, 7, 7, '10-Jan-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (178, 2, 8, '25-Mar-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (179, 9, 7, '19-Jun-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (180, 10, 8, '13-Feb-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (181, 9, 9, '25-Sep-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (182, 4, 3, '26-Jun-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (183, 10, 5, '06-Apr-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (184, 7, 7, '17-Jul-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (185, 7, 8, '17-Jun-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (186, 5, 9, '15-Feb-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (187, 5, 8, '17-Feb-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (188, 2, 3, '28-Jun-2022', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (189, 1, 9, '19-Aug-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (190, 10, 7, '24-Jan-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (191, 3, 8, '27-Dec-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (192, 5, 10, '28-Apr-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (193, 1, 3, '05-Apr-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (194, 8, 7, '02-Apr-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (195, 6, 10, '13-Dec-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (196, 1, 7, '18-Jan-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (197, 3, 2, '13-Jun-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (198, 7, 9, '21-Apr-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (199, 8, 7, '15-Mar-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (200, 5, 10, '22-Apr-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (201, 4, 8, '07-Mar-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (202, 3, 5, '07-Oct-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (203, 8, 9, '05-Jul-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (204, 10, 7, '15-Apr-2023', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (205, 10, 2, '19-Nov-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (206, 7, 9, '17-Oct-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (207, 8, 10, '12-Sep-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (208, 8, 7, '04-Aug-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (209, 1, 10, '05-Jun-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (210, 5, 2, '25-Feb-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (211, 1, 3, '29-Mar-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (212, 1, 7, '16-Sep-2022', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (213, 1, 3, '14-Dec-2021', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (214, 3, 10, '12-Dec-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (215, 5, 9, '20-Nov-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (216, 8, 7, '14-Oct-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (217, 7, 10, '18-May-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (218, 1, 9, '05-Mar-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (219, 2, 8, '30-Jan-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (220, 6, 5, '21-Apr-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (221, 5, 2, '08-Nov-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (222, 1, 9, '31-Oct-2021', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (223, 1, 5, '08-May-2022', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (224, 9, 5, '19-Oct-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (225, 7, 9, '19-Aug-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (226, 7, 2, '03-Sep-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (227, 3, 3, '07-Feb-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (228, 10, 3, '12-Nov-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (229, 10, 8, '20-May-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (230, 9, 10, '08-Dec-2022', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (231, 5, 8, '24-Oct-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (232, 2, 2, '02-Nov-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (233, 10, 2, '26-Jan-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (234, 10, 3, '16-Jun-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (235, 4, 8, '19-Mar-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (236, 1, 7, '04-Dec-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (237, 6, 9, '15-Nov-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (238, 9, 2, '08-Oct-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (239, 7, 8, '17-Jan-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (240, 1, 8, '25-Sep-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (241, 8, 9, '25-Jul-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (242, 10, 2, '07-Sep-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (243, 5, 7, '25-Jul-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (244, 5, 7, '20-Jan-2023', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (245, 6, 10, '12-Jan-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (246, 2, 2, '10-May-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (247, 1, 10, '03-Aug-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (248, 8, 10, '30-Apr-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (249, 2, 10, '18-Sep-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (250, 7, 10, '08-Nov-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (251, 6, 5, '14-Jun-2021', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (252, 10, 9, '21-Jun-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (253, 3, 7, '15-Apr-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (254, 6, 7, '16-Aug-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (255, 1, 2, '24-Sep-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (256, 9, 8, '23-Oct-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (257, 7, 8, '09-Dec-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (258, 8, 10, '04-Jul-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (259, 7, 8, '15-May-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (260, 5, 5, '05-Apr-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (261, 8, 3, '03-May-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (262, 7, 5, '07-May-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (263, 4, 2, '27-Apr-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (264, 7, 10, '30-Nov-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (265, 9, 5, '09-Jul-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (266, 4, 9, '27-Oct-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (267, 2, 10, '07-Jul-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (268, 2, 8, '12-Feb-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (269, 2, 10, '26-Sep-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (270, 6, 9, '21-Nov-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (271, 2, 7, '27-Jun-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (272, 10, 7, '21-Sep-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (273, 10, 3, '25-Apr-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (274, 3, 10, '24-Dec-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (275, 7, 10, '21-Jun-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (276, 9, 7, '03-Jul-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (277, 1, 7, '08-Jun-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (278, 7, 8, '15-Apr-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (279, 5, 2, '18-Mar-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (280, 2, 3, '16-Jun-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (281, 7, 9, '17-Apr-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (282, 7, 2, '13-Mar-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (283, 1, 8, '14-Aug-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (284, 3, 8, '19-Jul-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (285, 6, 7, '02-Aug-2021', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (286, 1, 9, '11-Jul-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (287, 7, 5, '19-Feb-2022', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (288, 10, 7, '04-Apr-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (289, 1, 2, '22-Oct-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (290, 2, 7, '20-Mar-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (291, 5, 5, '05-Apr-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (292, 8, 2, '12-Jun-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (293, 10, 10, '23-May-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (294, 3, 7, '03-Oct-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (295, 5, 5, '14-Oct-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (296, 7, 10, '24-Jun-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (297, 7, 10, '12-May-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (298, 7, 5, '30-Dec-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (299, 8, 2, '01-Oct-2021', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (300, 3, 10, '11-Oct-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (301, 9, 9, '26-May-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (302, 8, 3, '17-Feb-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (303, 8, 5, '20-Jul-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (304, 1, 7, '22-Dec-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) values (305, 5, 8, '02-Jul-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (306, 9, 7, '24-Jun-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (307, 10, 10, '25-Sep-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (308, 5, 10, '04-May-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (309, 9, 8, '14-Jan-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (310, 8, 7, '18-Jun-2023', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (311, 10, 5, '11-Jul-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (312, 3, 7, '02-Nov-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (313, 10, 8, '22-May-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (314, 6, 10, '26-Jul-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (315, 4, 8, '19-Jul-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (316, 4, 8, '20-Sep-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (317, 4, 3, '20-Dec-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (318, 6, 8, '08-Jul-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (319, 6, 10, '29-Jul-2023', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (320, 3, 10, '01-Apr-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (321, 1, 3, '30-Nov-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (322, 3, 7, '10-Jul-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (323, 9, 3, '26-May-2021', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (324, 2, 9, '24-Oct-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (325, 4, 2, '17-Jan-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (326, 8, 9, '03-Aug-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (327, 7, 2, '13-May-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (328, 4, 9, '05-Sep-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (329, 9, 5, '08-Jul-2021', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (330, 9, 9, '31-Jan-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (331, 2, 10, '09-Aug-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (332, 6, 5, '30-Jun-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (333, 7, 10, '23-Mar-2023', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (334, 6, 10, '20-Apr-2023', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (335, 1, 9, '24-May-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (336, 8, 10, '02-May-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (337, 3, 7, '28-May-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (338, 4, 10, '26-Apr-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (339, 5, 7, '02-Mar-2021', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (340, 1, 10, '12-Apr-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (341, 9, 7, '22-Sep-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (342, 2, 7, '16-Jun-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (343, 6, 3, '07-May-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (344, 9, 9, '23-Nov-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (345, 9, 9, '27-Jul-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (346, 1, 7, '07-Jul-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (347, 7, 9, '22-Apr-2021', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (348, 10, 7, '11-Aug-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (349, 2, 8, '14-Apr-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (350, 6, 2, '11-Aug-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (351, 10, 9, '10-Oct-2022', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (352, 10, 7, '28-Jul-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (353, 3, 5, '28-Mar-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (354, 10, 3, '10-Dec-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (355, 4, 2, '25-May-2021', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (356, 2, 5, '13-Aug-2021', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (357, 8, 10, '19-Jun-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (358, 5, 2, '29-May-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (359, 9, 5, '12-Mar-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (360, 1, 9, '13-Dec-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (361, 2, 9, '17-May-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (362, 1, 3, '10-Apr-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (363, 7, 7, '26-Dec-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (364, 9, 10, '11-Jan-2021', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (365, 9, 8, '12-Feb-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (366, 4, 9, '27-Mar-2021', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (367, 2, 10, '17-Jul-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (368, 9, 9, '20-Jun-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (369, 7, 10, '26-Oct-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (370, 8, 7, '24-Sep-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (371, 2, 9, '16-Aug-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (372, 3, 10, '27-Aug-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (373, 1, 10, '16-May-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (374, 3, 8, '17-Nov-2022', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (375, 7, 3, '20-Jan-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (376, 4, 10, '07-Sep-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (377, 3, 8, '15-Aug-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (378, 5, 3, '23-Jul-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (379, 2, 8, '06-Feb-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (380, 10, 8, '28-Feb-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (381, 10, 8, '26-Oct-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (382, 1, 2, '31-Mar-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (383, 1, 3, '13-Jul-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (384, 6, 8, '17-Dec-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (385, 1, 7, '20-Jul-2022', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (386, 10, 5, '03-Mar-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (387, 7, 2, '31-May-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (388, 9, 2, '09-Jul-2021', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (389, 3, 7, '16-Apr-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (390, 6, 7, '17-Aug-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (391, 9, 2, '29-Dec-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (392, 1, 8, '25-Dec-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (393, 8, 5, '18-Jan-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (394, 6, 9, '06-Feb-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (395, 1, 7, '08-Nov-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (396, 6, 2, '28-Sep-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (397, 8, 3, '15-Feb-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (398, 3, 3, '04-Aug-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (399, 2, 8, '27-Mar-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (400, 2, 2, '07-May-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (401, 4, 5, '19-Nov-2022', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (402, 9, 8, '08-Feb-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (403, 8, 3, '10-Feb-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (404, 5, 9, '28-Aug-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (405, 1, 3, '29-May-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (406, 9, 7, '16-Dec-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (407, 8, 3, '07-Aug-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (408, 10, 3, '07-Dec-2023', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (409, 9, 7, '01-Mar-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (410, 10, 9, '07-Jun-2022', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (411, 6, 10, '16-May-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (412, 6, 5, '11-Sep-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (413, 4, 10, '10-Apr-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (414, 3, 5, '31-Oct-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (415, 2, 2, '02-Jan-2023', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (416, 9, 7, '15-Apr-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (417, 5, 9, '22-Dec-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (418, 3, 3, '08-Jul-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (419, 1, 3, '16-Sep-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (420, 7, 9, '28-Dec-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (421, 7, 7, '13-Aug-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (422, 8, 7, '18-Mar-2022', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (423, 2, 8, '09-Jun-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (424, 3, 8, '12-Apr-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (425, 2, 3, '19-Nov-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (426, 2, 3, '30-May-2022', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (427, 3, 8, '12-Jan-2021', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (428, 4, 10, '14-Mar-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (429, 6, 2, '15-Mar-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (430, 9, 3, '05-Aug-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (431, 8, 9, '03-Jul-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (432, 7, 5, '27-Jan-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (433, 1, 9, '14-Feb-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (434, 5, 2, '02-Jan-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (435, 3, 2, '05-Aug-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (436, 10, 5, '05-Jun-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (437, 1, 3, '06-Mar-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (438, 4, 7, '29-Oct-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (439, 7, 3, '23-Oct-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (440, 6, 8, '28-Sep-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (441, 5, 8, '21-Mar-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (442, 6, 10, '07-Feb-2021', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (443, 9, 8, '22-Nov-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (444, 3, 5, '26-Mar-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (445, 4, 8, '11-Nov-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (446, 10, 2, '18-Oct-2022', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (447, 10, 7, '01-Mar-2021', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (448, 3, 3, '25-Jul-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (449, 9, 3, '02-Feb-2023', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (450, 5, 3, '20-Mar-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (451, 8, 8, '28-Jul-2022', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (452, 3, 8, '04-Jan-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (453, 8, 8, '22-Jun-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (454, 6, 2, '20-Sep-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (455, 6, 3, '14-May-2021', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (456, 3, 8, '09-Aug-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (457, 1, 2, '08-Nov-2021', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (458, 3, 10, '03-Mar-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (459, 4, 5, '11-Nov-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (460, 10, 9, '21-Jul-2022', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (461, 3, 2, '03-Jun-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (462, 7, 10, '15-Dec-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (463, 9, 10, '08-Sep-2023', 5);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (464, 5, 7, '03-Sep-2023', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (465, 5, 2, '25-Nov-2022', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (466, 6, 8, '25-Mar-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (467, 2, 5, '08-Jul-2022', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (468, 4, 2, '17-Dec-2023', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (469, 6, 7, '04-Nov-2021', 8);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (470, 10, 2, '21-Aug-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (471, 10, 3, '06-Jan-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (472, 7, 3, '18-Jan-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (473, 9, 3, '18-Apr-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (474, 7, 8, '19-Jul-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (475, 3, 9, '06-Nov-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (476, 2, 3, '08-Sep-2023', 6);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (477, 10, 10, '04-Nov-2021', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (478, 8, 9, '06-Sep-2022', 10);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (479, 3, 10, '20-May-2022', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (480, 10, 10, '21-Apr-2023', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (481, 6, 2, '03-Mar-2022', 7);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (482, 6, 7, '04-Dec-2023', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (483, 6, 3, '15-Mar-2022', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (484, 9, 3, '16-Dec-2021', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (485, 10, 8, '21-Jan-2021', 2);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (486, 5, 9, '09-Apr-2022', 4);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (487, 10, 10, '26-Jul-2023', 9);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (488, 5, 7, '08-Aug-2023', 1);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (489, 8, 5, '02-Dec-2021', 3);
+INSERT INTO Booking (Booking_id, Customer_id, Package_id, B_Date, Quantity) VALUES (490, 5, 5, '07-Sep-2021', 7);
+
+INSERT INTO Cancellation (Cancellation_ID, Booking_ID, C_Date) VALUES (1, 6, '30-JUL-2022');
+INSERT INTO Cancellation (Cancellation_ID, Booking_ID, C_Date) VALUES (2, 3, '22-DEC-2021');
+INSERT INTO Cancellation (Cancellation_ID, Booking_ID, C_Date) VALUES (3, 4, '30-JAN-2022');
+INSERT INTO Cancellation (Cancellation_ID, Booking_ID, C_Date) VALUES (4, 8, '23-SEP-2021');
+INSERT INTO Cancellation (Cancellation_ID, Booking_ID, C_Date) VALUES (5, 2, '19-JAN-2023');
+INSERT INTO Cancellation (Cancellation_ID, Booking_ID, C_Date) VALUES (6, 9, '15-MAY-2022');
+INSERT INTO Cancellation (Cancellation_ID, Booking_ID, C_Date) VALUES (7, 11, '27-JAN-2022');
+INSERT INTO Cancellation (Cancellation_ID, Booking_ID, C_Date) VALUES (8, 10, '30-JUL-2021');
+INSERT INTO Cancellation (Cancellation_ID, Booking_ID, C_Date) VALUES (9, 5, '28-JUN-2021');
+INSERT INTO Cancellation (Cancellation_ID, Booking_ID, C_Date) VALUES (10, 7, '28-MAY-2021');
+INSERT INTO Cancellation (Cancellation_ID, Booking_ID, C_Date) VALUES (11, 1, '04-NOV-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (12, 174, '02-Nov-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (13, 22, '15-Apr-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (14, 333, '03-Oct-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (15, 179, '27-Apr-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (16, 223, '23-Jul-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (17, 217, '12-Jun-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (18, 371, '27-Feb-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (19, 53, '19-Jun-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (20, 347, '06-Feb-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (21, 323, '10-Jun-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (22, 55, '31-Oct-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (23, 239, '06-Apr-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (24, 260, '06-Aug-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (25, 110, '02-Jul-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (26, 317, '19-Mar-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (27, 90, '10-Aug-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (28, 108, '06-Jul-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (29, 100, '15-Jan-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (30, 98, '30-Mar-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (31, 291, '19-Oct-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (32, 234, '22-Dec-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (33, 389, '26-Aug-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (34, 53, '17-Dec-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (35, 88, '03-Sep-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (36, 66, '23-Feb-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (37, 312, '24-Sep-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (38, 462, '28-Jun-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (39, 318, '19-Nov-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (40, 160, '17-Mar-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (41, 126, '10-Dec-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (42, 259, '16-Jun-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (43, 412, '30-Aug-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (44, 158, '22-Nov-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (45, 208, '15-Aug-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (46, 306, '11-Apr-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (47, 425, '08-Jul-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (48, 286, '08-Mar-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (49, 68, '28-Sep-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (50, 316, '16-May-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (51, 20, '09-Aug-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (52, 26, '07-Jul-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (53, 397, '29-Jun-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (54, 12, '09-Nov-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (55, 258, '22-Dec-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (56, 311, '01-Sep-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (57, 57, '15-Sep-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (58, 236, '21-Feb-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (59, 356, '03-Apr-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (60, 21, '30-May-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (61, 446, '11-Nov-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (62, 469, '25-Oct-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (63, 167, '13-Nov-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (64, 410, '28-Aug-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (65, 417, '23-May-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (66, 393, '28-Mar-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (67, 177, '03-Nov-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (68, 377, '06-Nov-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (69, 210, '06-Nov-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (70, 23, '03-Feb-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (71, 281, '11-Dec-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (72, 92, '09-Dec-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (73, 102, '25-Jun-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (74, 485, '31-Oct-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (75, 271, '25-Mar-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (76, 327, '11-Sep-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (77, 245, '01-Jan-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (78, 473, '11-Aug-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (79, 54, '10-Sep-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (80, 214, '07-Jun-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (81, 302, '27-May-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (82, 43, '16-Dec-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (83, 291, '17-Sep-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (84, 150, '06-May-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (85, 221, '22-Sep-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (86, 401, '09-May-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (87, 253, '18-Oct-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (88, 399, '13-Mar-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (89, 207, '26-Jun-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (90, 256, '21-May-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (91, 288, '17-Feb-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (92, 280, '10-Aug-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (93, 113, '20-Mar-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (94, 264, '29-Mar-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (95, 120, '11-Mar-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (96, 78, '16-Dec-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (97, 76, '04-Sep-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (98, 73, '14-Oct-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (99, 207, '24-Jun-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (100, 451, '20-Aug-2022');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (101, 434, '02-Dec-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (102, 259, '01-Aug-2021');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (103, 12, '20-Apr-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (104, 68, '07-Feb-2023');
+INSERT INTO Cancellation (Cancellation_id, Booking_id, C_date) VALUES (105, 400, '22-Nov-2021');
+INSERT INTO Customer (Customer_ID, C_Name, C_Gender, C_PhoneNo, PassportNo, VIsaNo) VALUES (1, 'Scotty Rupel', 'M', '0627728324', 'E07643778', '21361946');
+
+INSERT INTO Customer (Customer_ID, C_Name, C_Gender, C_PhoneNo, PassportNo, VIsaNo) VALUES (2, 'Mehetabel Merigon', 'F', '0284078891', 'X97166441', '61328199');
+
+INSERT INTO Customer (Customer_ID, C_Name, C_Gender, C_PhoneNo, PassportNo, VIsaNo) VALUES (3, 'Padraic Gillmor', 'F', '0404218841', 'B58833411', '57383387');
+
+INSERT INTO Customer (Customer_ID, C_Name, C_Gender, C_PhoneNo, PassportNo, VIsaNo) VALUES (4, 'Fifi Laughlin', 'M', '0386410575', 'T04481462', '17458183');
+
+INSERT INTO Customer (Customer_ID, C_Name, C_Gender, C_PhoneNo, PassportNo, VIsaNo) VALUES (5, 'Garth Murrill', 'M', '0952871106', 'T61358315', '10276949');
+
+INSERT INTO Customer (Customer_ID, C_Name, C_Gender, C_PhoneNo, PassportNo, VIsaNo) VALUES (6, 'Laverna Terran', 'F', '0716086830', 'X82391186', '60512756');
+
+INSERT INTO Customer (Customer_ID, C_Name, C_Gender, C_PhoneNo, PassportNo, VIsaNo) VALUES (7, 'Corbet Dorkins', 'M', '0354323445', 'L36282979', '35120979');
+
+INSERT INTO Customer (Customer_ID, C_Name, C_Gender, C_PhoneNo, PassportNo, VIsaNo) VALUES (8, 'Koenraad Gretham', 'M', '0455578651', 'Y21608605', '33417362');
+
+INSERT INTO Customer (Customer_ID, C_Name, C_Gender, C_PhoneNo, PassportNo, VIsaNo) VALUES (9, 'Dorette Riguard', 'F', '0107592002', 'W85005698', '44982463');
+
+INSERT INTO Customer (Customer_ID, C_Name, C_Gender, C_PhoneNo, PassportNo, VIsaNo) VALUES (10, 'Hyacinthie Arntzen', 'F', '0156642947', 'B38825159', '97717571');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (1, 4, 5, 'The tour was amazing, highly recommended!', '12-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (2, 3, 4, 'Great experience overall, but could improve on transportation.', '30-MAR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (3, 4, 5, 'The guide was very knowledgeable and friendly', '20-FEB-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (4, 5, 3, 'Enjoyed the activities, but the accommodation could be better.', '10-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (5, 2, 5, 'The tour exceeded my expectations, especially the food!', '15-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (6, 5, 2, 'Disappointed with the lack of communication regarding itinerary changes.', '20-JUL-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (7, 1, 4, 'Had a fantastic time, but the tour felt rushed at times.', '1-APR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (8, 3, 4, 'The scenery was breathtaking, worth every penny!', '20-MAR-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (9, 4, 3, 'Encountered some issues with the booking process, but staff were helpful in resolving them.', '20-FEB-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (10, 2, 3, 'Average experience, expected more for the price.', '17-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (11, 5, 3, 'The whole trip was very rushed.', '18-JUL-2021'); 
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (12, 7, 5, 'Absolutely loved every moment of the tour!', '25-MAR-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (13, 8, 4, 'Had a wonderful time, but the weather could have been better.', '10-JAN-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (14, 1, 5, 'Exceeded my expectations, especially the tour guide!', '05-MAY-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (15, 6, 3, 'Some activities were great, others not so much.', '15-DEC-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (16, 9, 4, 'Overall enjoyable experience, but could have been more organized.', '22-AUG-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (17, 3, 2, 'Disappointed with the quality of accommodation.', '30-SEP-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (18, 5, 5, 'Best tour I have ever been on, highly recommend!', '10-JUL-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (19, 2, 3, 'Expected more activities included in the package.', '18-MAR-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (20, 10, 4, 'Great value for money, had an amazing time!', '07-NOV-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (21, 4, 4, 'Enjoyed the tour, but some aspects could be improved.', '12-JUN-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (22, 8, 2, 'Had high expectations but was disappointed overall.', '01-AUG-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (23, 6, 5, 'Absolutely fantastic experience, would do it again in a heartbeat!', '20-MAY-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (24, 9, 3, 'Good tour overall, but lacked variety in activities.', '03-APR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (25, 1, 4, 'Had a great time exploring new places!', '15-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (26, 7, 3, 'Some aspects of the tour were great, others not so much.', '28-OCT-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (27, 3, 5, 'Absolutely stunning scenery, exceeded expectations!', '08-DEC-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (28, 2, 4, 'Had a wonderful time, but the tour felt a bit rushed at times.', '04-JUL-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (29, 10, 2, 'Expected more for the price paid.', '21-SEP-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (30, 5, 5, 'Incredible experience, everything was perfect!', '09-MAR-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (31, 8, 3, 'Some parts of the tour were great, others could be improved.', '27-APR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (32, 4, 4, 'Overall enjoyable experience, but some activities were better than others.', '13-AUG-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (33, 6, 5, 'Fantastic tour, would highly recommend to anyone!', '02-JUN-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (34, 1, 2, 'Disappointed with the quality of service provided.', '19-JAN-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (35, 9, 4, 'Had a great time overall, but could improve on communication with customers.', '11-MAY-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (36, 3, 5, 'Absolutely loved the tour, everything was perfect!', '03-SEP-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (37, 7, 3, 'Some activities were great, others not so much.', '28-NOV-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (38, 8, 4, 'Had a wonderful time exploring new places!', '17-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (39, 2, 2, 'Expected more for the price paid.', '14-JUL-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (40, 10, 5, 'The tour exceeded all expectations, would do it again!', '06-APR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (41, 5, 3, 'Enjoyed some aspects of the tour, others not so much.', '30-DEC-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (42, 4, 4, 'Had a great time overall, but some aspects could be improved.', '08-MAR-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (43, 9, 5, 'Absolutely breathtaking experience, would highly recommend!', '25-MAY-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (44, 6, 3, 'Expected more activities included in the package.', '01-AUG-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (45, 1, 4, 'Had a fantastic time exploring new places!', '14-JAN-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (46, 7, 5, 'Absolutely loved every moment of the tour!', '09-MAR-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (47, 2, 4, 'Had a wonderful time, but the weather could have been better.', '30-NOV-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (48, 8, 2, 'Had high expectations but was disappointed overall.', '15-JUL-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (49, 10, 5, 'Best tour I have ever been on, highly recommend!', '28-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (50, 5, 3, 'Some aspects of the tour were great, others not so much.', '05-JUN-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (51, 4, 4, 'Had a great time overall, but could improve on communication with customers.', '20-APR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (52, 6, 5, 'Absolutely loved the tour, everything was perfect!', '09-DEC-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (53, 9, 3, 'Expected more for the price paid.', '27-MAY-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (54, 1, 4, 'Had a wonderful time exploring new places!', '16-JUL-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (55, 7, 2, 'Disappointed with the quality of service provided.', '31-AUG-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (56, 8, 4, 'Had a fantastic time exploring new places!', '23-APR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (57, 2, 3, 'Enjoyed some aspects of the tour, others not so much.', '10-MAR-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (58, 10, 5, 'Absolutely breathtaking experience, would highly recommend!', '02-JUN-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (59, 5, 3, 'Expected more activities included in the package.', '19-SEP-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (60, 4, 4, 'Had a great time overall, but some aspects could be improved.', '04-JUL-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (61, 6, 5, 'Absolutely fantastic experience, would do it again in a heartbeat!', '30-APR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (62, 9, 3, 'Some activities were great, others not so much.', '11-OCT-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (63, 1, 4, 'Had a wonderful time, but the weather could have been better.', '20-MAR-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (64, 7, 2, 'Disappointed with the lack of communication regarding itinerary changes.', '15-NOV-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (65, 8, 4, 'The tour exceeded my expectations, especially the food!', '28-FEB-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (66, 2, 3, 'Enjoyed the activities, but the accommodation could be better.', '09-AUG-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (67, 10, 5, 'Absolutely stunning scenery, exceeded expectations!', '02-SEP-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (68, 5, 3, 'Good tour overall, but lacked variety in activities.', '10-JAN-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (69, 4, 4, 'Had a great time exploring new places!', '05-MAY-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (70, 6, 5, 'Exceeded my expectations, especially the tour guide!', '20-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (71, 9, 3, 'Had a fantastic time, but the tour felt rushed at times.', '01-APR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (72, 1, 4, 'Absolutely loved every moment of the tour!', '20-MAR-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (73, 7, 2, 'Great experience overall, but could improve on transportation.', '30-SEP-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (74, 8, 4, 'The guide was very knowledgeable and friendly', '20-FEB-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (75, 2, 3, 'Enjoyed the activities, but the accommodation could be better.', '10-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (76, 10, 5, 'The tour exceeded my expectations, especially the food!', '15-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (77, 5, 3, 'Disappointed with the lack of communication regarding itinerary changes.', '20-JUL-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (78, 4, 4, 'Had a fantastic time, but the tour felt rushed at times.', '1-APR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (79, 6, 5, 'The scenery was breathtaking, worth every penny!', '20-MAR-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (80, 9, 3, 'Encountered some issues with the booking process, but staff were helpful in resolving them.', '20-FEB-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (81, 1, 4, 'Average experience, expected more for the price.', '17-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (82, 7, 2, 'The whole trip was very rushed.', '18-JUL-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (83, 8, 4, 'Had a fantastic time, but the tour felt rushed at times.', '20-MAR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (84, 2, 3, 'The scenery was breathtaking, worth every penny!', '20-FEB-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (85, 10, 5, 'Encountered some issues with the booking process, but staff were helpful in resolving them.', '20-FEB-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (86, 5, 3, 'Average experience, expected more for the price.', '17-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (87, 4, 4, 'The whole trip was very rushed.', '18-JUL-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (88, 6, 5, 'Had a fantastic time, but the tour felt rushed at times.', '20-MAR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (89, 9, 3, 'The scenery was breathtaking, worth every penny!', '20-FEB-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (90, 1, 4, 'Encountered some issues with the booking process, but staff were helpful in resolving them.', '20-FEB-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (91, 7, 2, 'Average experience, expected more for the price.', '17-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (92, 8, 4, 'The whole trip was very rushed.', '18-JUL-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (93, 2, 3, 'Had a fantastic time, but the tour felt rushed at times.', '20-MAR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (94, 10, 5, 'The scenery was breathtaking, worth every penny!', '20-FEB-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (95, 5, 3, 'Encountered some issues with the booking process, but staff were helpful in resolving them.', '20-FEB-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (96, 4, 4, 'Average experience, expected more for the price.', '17-FEB-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (97, 6, 5, 'The whole trip was very rushed.', '18-JUL-2021');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (98, 9, 3, 'Had a fantastic time, but the tour felt rushed at times.', '20-MAR-2022');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (99, 1, 4, 'The scenery was breathtaking, worth every penny!', '20-FEB-2023');
+INSERT INTO Feedback (Feedback_ID, Customer_ID, Rating, Comments, F_Date) VALUES (100, 7, 2, 'Encountered some issues with the booking process, but staff were helpful in resolving them.', '20-FEB-2023');
+

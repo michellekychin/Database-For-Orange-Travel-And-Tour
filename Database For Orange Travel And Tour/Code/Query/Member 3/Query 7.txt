@@ -1,0 +1,40 @@
+-- Set up the environment
+SET linesize 120
+SET pagesize 35
+
+-- Set the date format for the session
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Define column formats and headings
+COLUMN Package_ID FORMAT A12 HEADING "Package Id";
+COLUMN Activity FORMAT A40 HEADING "Package Activity" ;
+COLUMN Avg_Rating FORMAT 9.99 HEADING "Avg Rating";
+
+-- Set up report title and page numbering
+TTITLE LEFT '              The Average Rating of Each Packages'-
+CENTER '             Page No: ' FORMAT 999 SQL.PNO SKIP 2
+
+-- Set up a break on the package id
+BREAK ON Package_ID SKIP 2
+
+-- Select statement 
+SELECT
+	P.Package_ID, 
+	P.Activity, 
+	AVG(CAST(F.Rating AS FLOAT)) AS Avg_Rating
+FROM		
+	Package P
+JOIN		
+	Booking B ON P.Package_ID = B.Package_ID
+JOIN		
+	Feedback F ON B.Customer_ID = F.Customer_ID
+GROUP BY	
+	P.Package_ID, 
+	P.Activity
+ORDER BY 	
+	P.Package_ID;
+
+-- Clear formatting and titles 
+CLEAR COLUMNS
+CLEAR BREAKS
+TTITLE OFF

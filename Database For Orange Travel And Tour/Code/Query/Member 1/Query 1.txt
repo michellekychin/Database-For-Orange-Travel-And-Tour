@@ -1,0 +1,51 @@
+-- Prompt for user input
+ACCEPT CustomerName PROMPT 'Enter Customer Name: '
+ACCEPT StartDate PROMPT 'Enter Start Date (dd/mm/yyyy): '
+ACCEPT EndDate PROMPT 'Enter End Date (dd/mm/yyyy): '
+
+-- Set up the environment
+SET linesize 120
+SET pagesize 35
+
+-- Set the date format for the session
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Define column formats and headings
+COLUMN C_Name FORMAT A20 HEADING "Name";
+COLUMN C_Gender FORMAT A7 HEADING "Gender";
+COLUMN C_PhoneNo FORMAT A11 HEADING "Phone No";
+COLUMN Booking_ID FORMAT A15 HEADING "Booking Id";
+COLUMN Activity FORMAT A25 HEADING "Package Activity";
+COLUMN B_Date FORMAT A12 HEADING "Booking Date";
+
+-- Set up report title and page numbering
+TTITLE CENTER 'Booking Information' -
+RIGHT 'Page No: ' FORMAT 999 SQL.PNO SKIP 2
+
+-- Set up a break on the customer name
+BREAK ON C_Name ON C_Gender ON C_PhoneNo SKIP 1
+
+-- Select statement with optional filtering based on user input
+SELECT 
+	C.C_Name, 
+	C.C_Gender,
+	C.C_PhoneNo, 
+	B.Booking_ID, 
+	P.Activity, 
+	B.B_Date
+FROM 
+	Customer C
+JOIN 
+	Booking B ON C.Customer_ID = B.Customer_ID
+JOIN 
+	Package P ON B.Package_ID = P.Package_ID
+WHERE 
+	(C.C_Name = '&CustomerName' OR '&CustomerName' IS NULL)
+	AND B.B_Date BETWEEN TO_DATE('&StartDate') AND TO_DATE('&EndDate')
+ORDER BY 
+	B_Date;
+
+-- Clear formatting and titles
+CLEAR COLUMNS
+CLEAR BREAKS
+TTITLE OFF

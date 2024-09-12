@@ -1,0 +1,41 @@
+-- Prompt for user input
+ACCEPT InputYear PROMPT 'Enter the year (YYYY): '
+
+-- Set up the environment
+SET linesize 120
+SET pagesize 35
+
+-- Set the date format for the session
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Define column formats and headings
+COLUMN Month FORMAT A20 HEADING "Month";
+COLUMN Total_Revenue HEADING "Total Revenue(RM)";
+
+-- Set up report title and page numbering
+TTITLE LEFT '   Total Revenue by Month for &InputYear'-
+CENTER 'Page No: ' FORMAT 999 SQL.PNO SKIP 2
+
+-- Set up a break on the month 
+BREAK ON Month SKIP 1
+
+-- Select statement 
+SELECT	
+	TO_CHAR(B.B_Date, 'Month') AS Month,
+	SUM(P.Price) AS Total_Revenue
+FROM		
+	Booking B
+JOIN	
+	Package P ON B.Package_ID = P.Package_ID
+WHERE
+	TO_CHAR(B.B_Date, 'YYYY') = '&InputYear'
+GROUP BY	
+	TO_CHAR(B.B_Date, 'Month')
+ORDER BY	
+	TO_CHAR(B.B_Date, 'Month');
+
+-- Clear formatting and titles
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+TTITLE OFF

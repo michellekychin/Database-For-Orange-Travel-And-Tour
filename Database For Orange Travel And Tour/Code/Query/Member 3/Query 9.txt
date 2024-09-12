@@ -1,0 +1,37 @@
+-- Set up the environment
+SET linesize 120
+SET pagesize 35
+
+-- Set the date format for the session
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Define column formats and headings
+COLUMN Package_ID FORMAT A10 HEADING "Package Id";
+COLUMN Location FORMAT A40 HEADING "Location" ;
+COLUMN Activity FORMAT A30 HEADING "Package Activity" ;
+COLUMN Booking_Count HEADING "Booking Count";
+
+-- Set up report title and page numbering
+TTITLE LEFT '                            Top 5 Most Popular Packages'SKIP 1-
+RIGHT 'Page No: ' FORMAT 999 SQL.PNO SKIP 2
+
+-- Set up a break on the package id
+BREAK ON Package_ID SKIP 1
+
+-- Select statement 
+SELECT * FROM (
+		SELECT 	P.Package_ID, 
+				P.Activity, 
+				P.Location, 
+				COUNT(B.Booking_ID) AS Booking_Count
+		FROM		Package P
+		LEFT JOIN 	Booking B ON P.Package_ID = B.Package_ID
+		GROUP BY	P.Package_ID, P.Activity, P.Location
+		ORDER BY	Booking_Count DESC
+	      ) 
+WHERE ROWNUM <= 5;
+
+-- Clear formatting and titles
+CLEAR COLUMNS
+CLEAR BREAKS
+TTITLE OFF

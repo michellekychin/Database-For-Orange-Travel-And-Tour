@@ -1,0 +1,49 @@
+ACCEPT StartDate PROMPT 'Enter Start Date (dd/mm/yyyy): '
+ACCEPT EndDate PROMPT 'Enter End Date (dd/mm/yyyy): '
+
+-- Set up the environment
+SET linesize 120
+SET pagesize 35
+
+-- Set the date format for the session
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Define column formats and headings
+COLUMN Booking_ID FORMAT A12 HEADING "Booking Id";
+COLUMN C_Name FORMAT A20 HEADING "Customer Name";
+COLUMN Activity FORMAT A30 HEADING "Package Activity" ;
+COLUMN B_Date FORMAT A13 HEADING "Booking Date";
+COLUMN C_Date FORMAT A20 HEADING "Cancellation Date";
+
+-- Set up report title and page numbering
+TTITLE CENTER 'Booking History with Cancellation Date for each Customer'-
+RIGHT 'Page No: ' FORMAT 999 SQL.PNO SKIP 2
+
+-- Set up a break on the customer name 
+BREAK ON C_Name SKIP 2
+
+-- Select statement 
+SELECT 	
+	B.Booking_ID, 
+	C.C_Name, 
+	P.Activity, 
+	B.B_Date, 
+	NVL(TO_CHAR(ca.C_Date, 'dd/mm/yyyy'), '-') AS C_Date
+FROM	
+	Booking B
+JOIN		
+	Customer C ON B.Customer_ID = C.Customer_ID
+JOIN		
+	Package P ON B.Package_ID = P.Package_ID
+LEFT JOIN	
+	Cancellation ca ON B.Booking_ID = ca.Booking_ID
+WHERE	
+	B.B_Date BETWEEN TO_DATE('&StartDate') 
+	AND TO_DATE('&EndDate')
+ORDER BY	
+	C_Name, B.B_Date;
+
+-- Clear formatting and titles 
+CLEAR COLUMNS
+CLEAR BREAKS
+TTITLE OFF

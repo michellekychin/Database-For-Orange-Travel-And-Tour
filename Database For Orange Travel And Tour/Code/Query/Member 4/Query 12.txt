@@ -1,0 +1,35 @@
+-- Set up the environment
+SET linesize 120
+SET pagesize 35
+
+-- Set the date format for the session
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy';
+
+-- Define column formats and headings
+COLUMN Package_ID FORMAT A15 HEADING "Package Id";
+COLUMN Activity FORMAT A25 HEADING "Package Activity" ;
+COLUMN Location FORMAT A35 HEADING "Location";
+
+-- Set up report title and page numbering
+TTITLE LEFT '                       Package With No Booking'-
+RIGHT 'Page No: ' FORMAT 999 SQL.PNO SKIP 2
+
+-- Set up a break on the customer id
+BREAK ON Package_ID SKIP 2
+
+-- Select statement 
+SELECT 		
+	P.Package_ID, 
+	P.Activity, 
+	P.Location 
+FROM			
+	Package P
+LEFT JOIN	
+	Booking B ON P.Package_ID = B.Package_ID
+WHERE 	
+	B.Booking_ID IS NULL;
+
+-- Clear formatting and titles
+CLEAR COLUMNS
+CLEAR BREAKS
+TTITLE OFF
